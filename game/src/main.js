@@ -227,8 +227,8 @@ function update(dt) {
 
   // Wanted + police.
   const policeNear = state.cars.some((c) => c.isPolice && dist(c.x, c.y, p.x, p.y) < 430) || state.officers.some((o) => dist(o.x, o.y, p.x, p.y) < 300);
-  const hidden = !policeNear || (!isOnRoad(p.x, p.y) && state.wanted.hiddenTimer > 0.4 && !policeNear);
-  updateWanted(state.wanted, dt, policeNear && isOnRoad(p.x, p.y) ? true : policeNear);
+  // Heat only cools while no police unit is near; updateWanted tracks the hidden timer.
+  updateWanted(state.wanted, dt, policeNear);
   const wantCruisers = wantedCruiserTarget(state.wanted.stars);
   const cruisers = state.cars.filter((c) => c.isPolice);
   if (cruisers.length < wantCruisers) {
